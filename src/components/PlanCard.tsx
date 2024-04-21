@@ -31,9 +31,12 @@ const PlanCard = ({ plan }: Props) => {
           <h2>{formatDate(plan.endDate)}</h2>
         </div>
       </div>
-      <Button full bgColor={plan.color}>
-        <Link to={`/planejamento/${plan.id}`}>Ver mais</Link>
-      </Button>
+      <Link to={`/planejamento/${plan.id}`}>
+        {" "}
+        <Button full bgColor={plan.color}>
+          Ver mais
+        </Button>
+      </Link>
     </div>
   );
 };
