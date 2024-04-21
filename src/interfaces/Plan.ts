@@ -5,16 +5,19 @@ export interface Plan {
   initialDate: Date;
   endDate: Date;
   schedule: string;
-  details: {
-    day: string;
-    experienceField: string;
-    objectives: string;
-    development: string;
-  }[];
+  links: string[];
+  details: PlanDetail[];
   schedules: {
     hour: string;
     activity: string;
   }[];
+}
+
+export interface PlanDetail {
+  day: string;
+  experienceField: string;
+  objectives: string;
+  development: string;
 }
 
 export const myPlan: Plan = {
@@ -24,6 +27,7 @@ export const myPlan: Plan = {
   color: "#E16036",
   initialDate: new Date("2024-04-22"),
   endDate: new Date("2024-04-26"),
+  links: ["http://linkteste.com", "http://linkteste.com"],
   details: [
     {
       day: "Segunda 22/04",
@@ -50,7 +54,7 @@ export const myPlan: Plan = {
       development: "tabuadas do numero 7",
     },
     {
-      day: "Sexta 2/04",
+      day: "Sexta 26/04",
       experienceField: "raciocínio logico",
       objectives: "melhorar o raciocínio geral dos alunos",
       development: "tabuadas do numero 8",

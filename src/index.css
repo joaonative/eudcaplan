@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .form {
+    @apply px-2 w-full py-1 border border-primary text-xl rounded-lg;
+  }
+  label {
+    @apply flex w-full flex-col items-start text-xl font-medium gap-1;
+  }
+  input {
+    @apply focus:outline-none;
+  }
+}
+
 body {
   background-color: #f6f5f2;
   overflow-x: hidden;
