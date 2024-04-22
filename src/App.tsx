@@ -7,7 +7,7 @@ import PlanCard from "./components/PlanCard";
 import { Plus, X } from "lucide-react";
 import Button from "./components/Button";
 import { ariaLabels, COLORS, defaultPlan } from "./constants";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function App() {
   const navigate = useNavigate();
@@ -66,7 +66,11 @@ function App() {
         </h1>
         {plans && (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-4">
-            <PlanCard plan={defaultPlan} />
+            <Link to={"/exemplo"}>
+              <div className="pointer-events-none">
+                <PlanCard plan={defaultPlan} />
+              </div>
+            </Link>
             {plans.map((plan) => (
               <PlanCard plan={plan} key={plan.id} />
             ))}

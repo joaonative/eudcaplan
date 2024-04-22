@@ -20,12 +20,6 @@ const Header = () => {
         <nav className="hidden lg:block">
           <ul className="flex items-center gap-6 text-xl font-medium">
             <li>
-              <Link to={"/"}>Início</Link>
-            </li>
-            <li>
-              <Link to={"/sobre"}>Sobre</Link>
-            </li>
-            <li>
               <a href="https://github.com/joaonative/eudcaplan" target="_blank">
                 GitHub
               </a>
@@ -52,12 +46,6 @@ const Header = () => {
       {isOpen && (
         <nav>
           <ul className="lg:hidden flex flex-col items-center px-5 gap-3 mb-6 text-xl font-medium">
-            <li>
-              <Link to={"/"}>Início</Link>
-            </li>
-            <li>
-              <Link to={"/sobre"}>Sobre</Link>
-            </li>
             <li>
               <a href="https://github.com/joaonative/eudcaplan" target="_blank">
                 GitHub

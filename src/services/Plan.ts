@@ -38,7 +38,7 @@ export function createPlan(plan: Plan) {
     return;
   }
 
-  let plans: Plan[] = JSON.parse(localPlans);
+  const plans: Plan[] = JSON.parse(localPlans);
   plans.push(plan);
 
   const days = getWeekdaysArray(plan.initialDate, plan.endDate);
@@ -75,7 +75,7 @@ export function createPlan(plan: Plan) {
 
 function getWeekdaysArray(start: Date, end: Date): Date[] {
   const daysArray = [];
-  let currentDate = new Date(start);
+  const currentDate = new Date(start);
   while (currentDate <= end) {
     if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) {
       daysArray.push(new Date(currentDate));
@@ -109,7 +109,7 @@ export function editPlan(id: string, plan: Plan) {
     return;
   }
 
-  let plans = JSON.parse(localPlans);
+  const plans = JSON.parse(localPlans);
 
   const index = plans.findIndex((p: Plan) => p.id === id);
 
@@ -128,7 +128,7 @@ export function deletePlan(id: string) {
     return;
   }
 
-  let plans: Plan[] = JSON.parse(localPlans);
+  const plans: Plan[] = JSON.parse(localPlans);
   const index = plans.findIndex((p) => p.id === id);
 
   if (index === -1) {

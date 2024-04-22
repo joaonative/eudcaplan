@@ -4,11 +4,11 @@ export const APP_NAME = "EducaPlan";
 
 export const COLORS = [
   "#1F7FD7",
-  "#FF798A",
-  "#9747FF",
-  "#FBCD35",
-  "#3CE334",
-  "#F44E3F",
+  "#830A48",
+  "#724E91",
+  "#32936F",
+  "#2D3142",
+  "#EFCB68",
 ];
 
 export const ariaLabels = {
