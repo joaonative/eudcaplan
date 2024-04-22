@@ -180,7 +180,7 @@ const Plan = () => {
           )}
         </div>
         <table
-          className="lg:w-full w-max text-base font-medium text-center border-b-4 bg-white"
+          className="w-full text-base font-medium text-center border-b-4 bg-white"
           style={{ borderColor: plan.color }}
         >
           <thead

@@ -2,7 +2,7 @@ import { APP_NAME } from "../constants";
 
 const Hero = () => {
   return (
-    <section className="flex items-center">
+    <section className="flex lg:flex-row flex-col items-center">
       <div className="flex flex-col gap-5">
         <h1 className="font-bold text-5xl">
           Transforme sua sala de aula com o{" "}
@@ -18,7 +18,7 @@ const Hero = () => {
         alt="Imagem de uma criança sorrindo"
         width={512}
         height={"100%"}
-        className="object-cover hidden lg:block"
+        className="object-cover"
       />
     </section>
   );

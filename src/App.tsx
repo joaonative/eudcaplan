@@ -6,7 +6,7 @@ import { createPlan, getPlans } from "./services/Plan";
 import PlanCard from "./components/PlanCard";
 import { Plus, X } from "lucide-react";
 import Button from "./components/Button";
-import { ariaLabels, COLORS } from "./constants";
+import { ariaLabels, COLORS, defaultPlan } from "./constants";
 import { useNavigate } from "react-router-dom";
 
 function App() {
@@ -66,12 +66,14 @@ function App() {
         </h1>
         {plans && (
           <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-4">
+            <PlanCard plan={defaultPlan} />
             {plans.map((plan) => (
               <PlanCard plan={plan} key={plan.id} />
             ))}
+
             <button
               onClick={() => setIsOpen(true)}
-              className="col-span-1 flex justify-center items-center h-full bg-primary rounded-lg my-shadow"
+              className="col-span-1 flex justify-center items-center py-5 bg-primary rounded-lg my-shadow"
             >
               <Plus aria-label={ariaLabels.create} color="#FFF" size={48} />
             </button>
@@ -123,7 +125,7 @@ function App() {
                   </div>
                 </div>
               </div>
-              <div className="flex lg:flex-row flex-col items-center gap-4">
+              <div className="flex items-center gap-4">
                 <label>
                   Data de início:
                   <input
