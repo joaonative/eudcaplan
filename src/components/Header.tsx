@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { APP_NAME } from "../constants";
+import { APP_NAME, ariaLabels } from "../constants";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
@@ -23,19 +23,29 @@ const Header = () => {
               <Link to={"/"}>Início</Link>
             </li>
             <li>
-              <Link to={"/"}>Sobre</Link>
+              <Link to={"/sobre"}>Sobre</Link>
             </li>
             <li>
-              <Link to={"/"}>GitHub</Link>
+              <a href="https://github.com/joaonative/eudcaplan" target="_blank">
+                GitHub
+              </a>
             </li>
           </ul>
         </nav>
 
         <button className="lg:hidden" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? (
-            <X size={32} className="text-primary" />
+            <X
+              size={32}
+              className="text-primary"
+              aria-label={ariaLabels.close}
+            />
           ) : (
-            <Menu size={32} className="text-primary" />
+            <Menu
+              size={32}
+              className="text-primary"
+              aria-label={ariaLabels.menu}
+            />
           )}
         </button>
       </header>
@@ -46,10 +56,12 @@ const Header = () => {
               <Link to={"/"}>Início</Link>
             </li>
             <li>
-              <Link to={"/"}>Sobre</Link>
+              <Link to={"/sobre"}>Sobre</Link>
             </li>
             <li>
-              <Link to={"/"}>GitHub</Link>
+              <a href="https://github.com/joaonative/eudcaplan" target="_blank">
+                GitHub
+              </a>
             </li>
           </ul>
         </nav>

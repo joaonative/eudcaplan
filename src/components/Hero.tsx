@@ -1,6 +1,4 @@
-import { Link } from "react-router-dom";
 import { APP_NAME } from "../constants";
-import Button from "./Button";
 
 const Hero = () => {
   return (
@@ -14,14 +12,6 @@ const Hero = () => {
           Com o {APP_NAME}, você tem tudo o que precisa para criar horários
           claros e planos de aula envolventes em um só lugar.
         </p>
-        <div className="hidden lg:flex items-center gap-5">
-          <Button shadow>
-            <Link to={"/"}>Começar agora</Link>
-          </Button>
-          <Button shadow>
-            <Link to={"/"}>Conhecer projeto</Link>
-          </Button>
-        </div>
       </div>
       <img
         src="hero.png"

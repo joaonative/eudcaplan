@@ -1,88 +1,45 @@
 import { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import Hero from "./components/Hero";
-import { Plan, PlanDetail } from "./interfaces/Plan";
+import { Plan } from "./interfaces/Plan";
 import { createPlan, getPlans } from "./services/Plan";
 import PlanCard from "./components/PlanCard";
 import { Plus, X } from "lucide-react";
 import Button from "./components/Button";
-import { COLORS } from "./constants";
+import { ariaLabels, COLORS } from "./constants";
+import { useNavigate } from "react-router-dom";
 
 function App() {
+  const navigate = useNavigate();
+
   const [plans, setPlans] = useState<Plan[]>(getPlans());
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<Plan>({
-    id: "",
+    id: uuidv4(),
     name: "",
     color: "",
-    details: [
-      {
-        day: "",
-        experienceField: "",
-        objectives: "",
-        development: "",
-      },
-    ],
+    details: [],
     initialDate: new Date(),
     endDate: new Date(new Date().setDate(new Date().getDate() + 1)),
-    schedule: "",
-    links: [],
     schedules: [],
   });
 
   const isDisabled: boolean =
     !formData.color ||
-    !formData.details ||
     !formData.name ||
-    !formData.schedule ||
     !formData.initialDate ||
     !formData.endDate ||
-    !formData.links ||
     !formData.id;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    console.log(name, value);
     if (name === "initialDate" || name === "endDate") {
       const dateValue = new Date(value);
       if (!isNaN(dateValue.getTime())) {
         setFormData({ ...formData, [name]: dateValue });
-
-        const initialDate = formData.initialDate.getTime();
-        const endDate =
-          name === "endDate" ? dateValue.getTime() : formData.endDate.getTime();
-        const differenceInDays = Math.ceil(
-          (endDate - initialDate) / (1000 * 60 * 60 * 24)
-        );
-
-        const newDetails: PlanDetail[] = [];
-        for (let i = 0; i <= differenceInDays; i++) {
-          const currentDay = new Date(initialDate + i * 24 * 60 * 60 * 1000);
-          const dayOfWeek = [
-            "Domingo",
-            "Segunda-feira",
-            "Terça-feira",
-            "Quarta-feira",
-            "Quinta-feira",
-            "Sexta-feira",
-            "Sábado",
-          ][currentDay.getDay()];
-          const formattedDate = `${currentDay.getDate()}/${
-            currentDay.getMonth() + 1
-          } ${dayOfWeek}`;
-          const detail: PlanDetail = {
-            day: formattedDate,
-            experienceField: "",
-            objectives: "",
-            development: "",
-          };
-          newDetails.push(detail);
-        }
-
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          details: newDetails,
-        }));
       }
       return;
     }
@@ -97,6 +54,7 @@ function App() {
     createPlan(formData);
     setPlans([...plans, formData]);
     setIsOpen(false);
+    navigate(`/planejamento/${formData.id}`);
   };
 
   return (
@@ -113,9 +71,9 @@ function App() {
             ))}
             <button
               onClick={() => setIsOpen(true)}
-              className="col-span-1 flex justify-center py-12 bg-primary rounded-lg my-shadow"
+              className="col-span-1 flex justify-center items-center h-full bg-primary rounded-lg my-shadow"
             >
-              <Plus color="#FFF" />
+              <Plus aria-label={ariaLabels.create} color="#FFF" size={48} />
             </button>
           </div>
         )}
@@ -128,10 +86,11 @@ function App() {
                 Criar Planejamento
               </h1>
               <button
+                type="button"
                 onClick={() => setIsOpen(false)}
                 className="bg-red-500 p-2 rounded-full"
               >
-                <X color="#FFF" />
+                <X aria-label={ariaLabels.close} color="#FFF" />
               </button>
             </div>
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -139,6 +98,7 @@ function App() {
                 <label>
                   Nome:
                   <input
+                    autoComplete="off"
                     className="form"
                     type="text"
                     name="name"
@@ -149,8 +109,10 @@ function App() {
                 <div className="w-full">
                   <h2 className="text-xl font-medium">Cor:</h2>
                   <div className="flex items-center justify-between lg:justify-normal lg:gap-2">
-                    {COLORS.map((color) => (
+                    {COLORS.map((color, index) => (
                       <button
+                        type="button"
+                        key={index}
                         onClick={() => setFormData({ ...formData, color })}
                         className={`h-8 w-8 ${
                           formData.color === color && "border-4 border-black"
@@ -165,6 +127,7 @@ function App() {
                 <label>
                   Data de início:
                   <input
+                    autoComplete="off"
                     className="form"
                     type="date"
                     name="initialDate"
@@ -175,6 +138,7 @@ function App() {
                 <label>
                   Data final:
                   <input
+                    autoComplete="off"
                     className="form"
                     type="date"
                     name="endDate"
@@ -183,135 +147,7 @@ function App() {
                   />
                 </label>
               </div>
-
-              <label>
-                Links úteis:
-                {formData.links.map((link, index) => (
-                  <div className="form flex items-center justify-between">
-                    <input
-                      className="w-full"
-                      key={index}
-                      type="text"
-                      value={link}
-                      onChange={(e) => {
-                        const newLinks = [...formData.links];
-                        newLinks[index] = e.target.value;
-                        setFormData({ ...formData, links: newLinks });
-                      }}
-                    />
-                    <button
-                      onClick={() => {
-                        const links = [...formData.links.splice(index, 1)];
-                        setFormData({ ...formData, links });
-                      }}
-                    >
-                      <X />
-                    </button>
-                  </div>
-                ))}
-                <Button
-                  full
-                  onclick={() =>
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      links: [...prevFormData.links, ""],
-                    }))
-                  }
-                >
-                  Adicionar Link
-                </Button>
-              </label>
-              <label className="flex flex-col">
-                Detalhes:
-                {formData.details.map((detail, index) => (
-                  <div
-                    key={index}
-                    className="w-full flex flex-col border-2 border-primary p-2"
-                  >
-                    <div className="flex lg:flex-row flex-col items-center gap-4">
-                      <label>
-                        Dia:
-                        <input
-                          className="form"
-                          type="text"
-                          value={detail.day}
-                          onChange={(e) => {
-                            const newDetails = [...formData.details];
-                            newDetails[index].day = e.target.value;
-                            setFormData({ ...formData, details: newDetails });
-                          }}
-                        />
-                      </label>
-                      <label>
-                        Campo de Experiência:
-                        <input
-                          className="form"
-                          type="text"
-                          value={detail.experienceField}
-                          onChange={(e) => {
-                            const newDetails = [...formData.details];
-                            newDetails[index].experienceField = e.target.value;
-                            setFormData({ ...formData, details: newDetails });
-                          }}
-                        />
-                      </label>
-                    </div>
-                    <div className="flex lg:flex-row flex-col items-center gap-4">
-                      <label>
-                        Objetivos:
-                        <input
-                          className="form"
-                          type="text"
-                          value={detail.objectives}
-                          onChange={(e) => {
-                            const newDetails = [...formData.details];
-                            newDetails[index].objectives = e.target.value;
-                            setFormData({ ...formData, details: newDetails });
-                          }}
-                        />
-                      </label>
-                      <label>
-                        Desenvolvimento:
-                        <input
-                          className="form"
-                          type="text"
-                          value={detail.development}
-                          onChange={(e) => {
-                            const newDetails = [...formData.details];
-                            newDetails[index].development = e.target.value;
-                            setFormData({ ...formData, details: newDetails });
-                          }}
-                        />
-                      </label>
-                    </div>
-                  </div>
-                ))}
-              </label>
-              <label>
-                Horários:
-                {formData.schedules.map((schedule, index) => (
-                  <div key={index}>
-                    <label>
-                      Atividade:
-                      <input
-                        className="form"
-                        type="text"
-                        value={schedule.activity}
-                        onChange={(e) => {
-                          const newSchedules = [...formData.schedules];
-                          newSchedules[index].activity = e.target.value;
-                          setFormData({ ...formData, schedules: newSchedules });
-                        }}
-                      />
-                    </label>
-                    <label>
-                      Hora:
-                      <div className="form">value={schedule.hour}</div>
-                    </label>
-                  </div>
-                ))}
-              </label>
-              <Button disabled={isDisabled} full>
+              <Button full shadow sumbit disabled={isDisabled}>
                 Salvar Planejamento
               </Button>
             </form>
